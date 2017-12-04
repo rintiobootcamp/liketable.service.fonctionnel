@@ -1,8 +1,10 @@
 package com.bootcamp.controllers;
 
 import com.bootcamp.commons.enums.EntityType;
+import com.bootcamp.commons.ws.usecases.pivotone.LikeWS;
 import com.bootcamp.entities.Commentaire;
-import com.bootcamp.services.CommentaireService;
+import com.bootcamp.entities.LikeTable;
+import com.bootcamp.services.LikeService;
 import com.bootcamp.version.ApiVersions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,69 +21,71 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@RestController("CommentaireController")
-@RequestMapping("/comment")
-@Api(value = "Commentaire API", description = "Commentaire API")
-public class CommentaireController {
+
+@RestController("LikeController")
+@RequestMapping("/like")
+@Api(value = "Like API", description = "Like API")
+@CrossOrigin(origins = "*")
+public class LikeController {
 
     @Autowired
-    CommentaireService commentaireService;
+    LikeService likeTableService;
 
     @Autowired
     HttpServletRequest request;
 
     @RequestMapping(method = RequestMethod.POST, value = "/")
     @ApiVersions({"1.0"})
-    @ApiOperation(value = "Create a new commentaire", notes = "Create a new commentaire")
-    public ResponseEntity<Integer> create(@RequestBody @Valid Commentaire commentaire) {
+    @ApiOperation(value = "Create a new likeTable", notes = "Create a new likeTable")
+    public ResponseEntity<Integer> create(@RequestBody @Valid LikeTable likeTable) {
 
         HttpStatus httpStatus = null;
 
         int id = -1;
         try {
-            id = commentaireService.create(commentaire);
+            id = likeTableService.create(likeTable);
             httpStatus = HttpStatus.OK;
         } catch (SQLException ex) {
-            Logger.getLogger(CommentaireController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LikeController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return new ResponseEntity<Integer>(id, httpStatus);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     @ApiVersions({"1.0"})
-    @ApiOperation(value = "Read a comments", notes = "Read a comments")
-    public ResponseEntity<Commentaire> read(@PathVariable(name = "id") int id) {
+    @ApiOperation(value = "Read a like", notes = "Read a like")
+    public ResponseEntity<LikeTable> read(@PathVariable(name = "id") int id) {
 
-        Commentaire commentaire = new Commentaire();
+        LikeTable likeTable = new LikeTable();
         HttpStatus httpStatus = null;
 
         try {
-            commentaire = commentaireService.read(id);
+            likeTable = likeTableService.read(id);
             httpStatus = HttpStatus.OK;
         } catch (SQLException ex) {
-            Logger.getLogger(CommentaireController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LikeController.class.getName()).log(Level.SEVERE, null, ex);
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
-        return new ResponseEntity<Commentaire>(commentaire, httpStatus);
+        return new ResponseEntity<>(likeTable, httpStatus);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{entityType}/{entityId}")
     @ApiVersions({"1.0"})
-    @ApiOperation(value = "Read a comments", notes = "Read a comments")
-    public ResponseEntity<List<Commentaire>> readByEntity(@PathVariable("entityId") int entityId, @PathVariable("entityType") String entityType) {
+    @ApiOperation(value = "Read a like", notes = "Read a like")
+    public ResponseEntity<LikeWS> readByEntity(@PathVariable("entityId") int entityId, @PathVariable("entityType") String entityType) {
         EntityType entite = EntityType.valueOf(entityType);
-        List<Commentaire> commentaire = new ArrayList<Commentaire>();
+        LikeWS likeTable = new LikeWS();
         HttpStatus httpStatus = null;
 
         try {
-            commentaire = commentaireService.getByEntity(entityId, entite);
+            likeTable = likeTableService.getByEntity(entityId, entite);
             httpStatus = HttpStatus.OK;
         } catch (SQLException ex) {
-            Logger.getLogger(CommentaireController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LikeController.class.getName()).log(Level.SEVERE, null, ex);
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
-        return new ResponseEntity<List<Commentaire>>(commentaire, httpStatus);
+        return new ResponseEntity<>(likeTable, httpStatus);
     }
 }
