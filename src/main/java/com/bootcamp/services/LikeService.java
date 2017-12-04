@@ -24,15 +24,6 @@ import javax.persistence.EntityManager;
 @Component
 public class LikeService implements DatabaseConstants {
 
-    private EntityManager em;
-
-    /**
-     * @return the entity manager
-     */
-    public EntityManager getEm() {
-        return em;
-    }
-
     public int create(LikeTable likeTable ) throws SQLException {
         LikeTableCRUD.create(likeTable);
         return likeTable.getId();
@@ -58,8 +49,8 @@ public class LikeService implements DatabaseConstants {
 
     public LikeWS  getByEntity(int entityId, EntityType entityType) throws SQLException {
         LikeWS likeWS =new  LikeWS();
-        int like=0;
-        int unlike =0;
+        long like=0;
+        long unlike =0;
         like = countEntity(entityId,  entityType ,true);
         unlike = countEntity(entityId,  entityType ,false);
         likeWS.setLike(like);
