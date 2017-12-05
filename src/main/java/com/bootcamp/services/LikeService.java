@@ -45,8 +45,8 @@ public class LikeService implements DatabaseConstants {
 
     public LikeWS  getByEntity(int entityId, EntityType entityType) throws SQLException {
         LikeWS likeWS =new  LikeWS();
-        long like=0;
-        long unlike =0;
+        int like=0;
+        int unlike=0;
         like = countEntity(entityId,  entityType ,true);
         unlike = countEntity(entityId,  entityType ,false);
         likeWS.setLike(like);
