@@ -50,7 +50,7 @@ public class LikeService implements DatabaseConstants {
         like = countEntity(entityId,  entityType ,true);
         unlike = countEntity(entityId,  entityType ,false);
         likeWS.setLike(like);
-        likeWS.setLike(unlike);
+        likeWS.setUnlike(unlike);
         return likeWS;
     }
     
