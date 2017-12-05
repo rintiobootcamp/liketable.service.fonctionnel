@@ -2,7 +2,6 @@ package com.bootcamp.controllers;
 
 import com.bootcamp.commons.enums.EntityType;
 import com.bootcamp.commons.ws.usecases.pivotone.LikeWS;
-import com.bootcamp.entities.Commentaire;
 import com.bootcamp.entities.LikeTable;
 import com.bootcamp.services.LikeService;
 import com.bootcamp.version.ApiVersions;
@@ -16,14 +15,12 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
 @RestController("LikeController")
-@RequestMapping("/like")
+@RequestMapping("/likes")
 @Api(value = "Like API", description = "Like API")
 @CrossOrigin(origins = "*")
 public class LikeController {
