@@ -31,7 +31,7 @@ public class LikeController {
     @Autowired
     HttpServletRequest request;
 
-    @RequestMapping(method = RequestMethod.POST, value = "/")
+    @RequestMapping(method = RequestMethod.POST)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Create a new likeTable", notes = "Create a new likeTable")
     public ResponseEntity<Integer> create(@RequestBody @Valid LikeTable likeTable) {
@@ -45,7 +45,7 @@ public class LikeController {
         } catch (SQLException ex) {
             Logger.getLogger(LikeController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return new ResponseEntity<Integer>(id, httpStatus);
+        return new ResponseEntity<>(id, httpStatus);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")

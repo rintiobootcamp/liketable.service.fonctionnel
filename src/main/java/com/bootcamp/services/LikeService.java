@@ -7,16 +7,11 @@ import com.bootcamp.commons.models.Criterias;
 import com.bootcamp.commons.models.Rule;
 import com.bootcamp.commons.ws.usecases.pivotone.LikeWS;
 import com.bootcamp.crud.LikeTableCRUD;
-import com.bootcamp.crud.LikeTableCRUD;
-import com.bootcamp.entities.LikeTable;
 import com.bootcamp.entities.LikeTable;
 import org.springframework.stereotype.Component;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
-import javax.management.Query;
-import javax.persistence.EntityManager;
 
 /**
  * Created by darextossa on 11/27/17.
@@ -25,7 +20,8 @@ import javax.persistence.EntityManager;
 public class LikeService implements DatabaseConstants {
 
     public int create(LikeTable likeTable ) throws SQLException {
-        LikeTableCRUD.create(likeTable);
+       likeTable.setDateCreation(System.currentTimeMillis());
+               LikeTableCRUD.create(likeTable);
         return likeTable.getId();
     }
 
