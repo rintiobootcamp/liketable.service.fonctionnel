@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
-  <persistence-unit name="databasePU" transaction-type="RESOURCE_LOCAL">
-    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <class>com.bootcamp.entities.Secteur</class>
-    <class>com.bootcamp.entities.Phase</class>
-    <class>com.bootcamp.entities.Region</class>
-    <class>com.bootcamp.entities.Axe</class>
-    <class>com.bootcamp.entities.Commentaire</class>
-    <class>com.bootcamp.entities.Media</class>
-    <class>com.bootcamp.entities.Pilier</class>
-    <class>com.bootcamp.entities.Projet</class>
- <class>com.bootcamp.entities.LikeTable</class>
-    <class>com.bootcamp.entities.User</class>
-    <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/data_base?zeroDateTimeBehavior=convertToNull"/>
-      <property name="javax.persistence.jdbc.user" value="root"/>
-      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-      <property name="javax.persistence.jdbc.password" value=""/>
-      <property name="javax.persistence.schema-generation.database.action" value="none"/>
-    </properties>
-  </persistence-unit>
+    <persistence-unit name="databasePU" transaction-type="RESOURCE_LOCAL">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <class>com.bootcamp.entities.Secteur</class>
+        <class>com.bootcamp.entities.Phase</class>
+        <class>com.bootcamp.entities.Region</class>
+        <class>com.bootcamp.entities.Axe</class>
+        <class>com.bootcamp.entities.Commentaire</class>
+        <class>com.bootcamp.entities.Media</class>
+        <class>com.bootcamp.entities.Pilier</class>
+        <class>com.bootcamp.entities.Projet</class>
+        <class>com.bootcamp.entities.LikeTable</class>
+        <class>com.bootcamp.entities.User</class>
+        <class>com.bootcamp.entities.Note</class>
+        <properties>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/data_base?zeroDateTimeBehavior=convertToNull"/>
+            <property name="javax.persistence.jdbc.user" value="root"/>
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+            <property name="javax.persistence.jdbc.password" value=""/>
+            <property name="javax.persistence.schema-generation.database.action" value="none"/>
+        </properties>
+    </persistence-unit>
 </persistence>
