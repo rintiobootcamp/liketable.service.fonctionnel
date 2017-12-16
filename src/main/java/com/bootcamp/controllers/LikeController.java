@@ -18,7 +18,10 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
+/**
+ *
+ * @author Bello
+ */
 @RestController("LikeController")
 @RequestMapping("/likes")
 @Api(value = "Like API", description = "Like API")
@@ -31,6 +34,12 @@ public class LikeController {
     @Autowired
     HttpServletRequest request;
 
+    /**
+     * Insert a like (or unlike) in the database
+     *
+     * @param likeTable
+     * @return like id
+     */
     @RequestMapping(method = RequestMethod.POST)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Create a new likeTable", notes = "Create a new likeTable")
@@ -48,6 +57,12 @@ public class LikeController {
         return new ResponseEntity<>(id, httpStatus);
     }
 
+    /**
+     * Get a like by its id
+     *
+     * @param id
+     * @return like entity
+     */
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Read a like", notes = "Read a like")
@@ -67,6 +82,13 @@ public class LikeController {
         return new ResponseEntity<>(likeTable, httpStatus);
     }
 
+    /**
+     * Get all the likes and unlikes of the given entity
+     *
+     * @param entityId
+     * @param entityType
+     * @return likes list
+     */
     @RequestMapping(method = RequestMethod.GET, value = "/{entityType}/{entityId}")
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Read a like", notes = "Read a like")
