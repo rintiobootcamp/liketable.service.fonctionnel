@@ -8,8 +8,10 @@ import com.bootcamp.commons.models.Rule;
 import com.bootcamp.commons.ws.usecases.pivotone.LikeWS;
 import com.bootcamp.crud.LikeTableCRUD;
 import com.bootcamp.entities.LikeTable;
+import org.eclipse.persistence.exceptions.DatabaseException;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -43,6 +45,15 @@ public class LikeService implements DatabaseConstants {
         return likeTables.get(0);
     }
 
+    public LikeWS read(LikeTable likeTable) throws SQLException {
+        LikeWS likeWS=new LikeWS();
+        if(likeTable.isLikeType())
+            likeWS.setLike(1);
+        else
+            likeWS.setUnlike(1);
+        return likeWS;
+    }
+
     public LikeWS  getByEntity(int entityId, EntityType entityType) throws SQLException {
         LikeWS likeWS =new  LikeWS();
         int like=0;
@@ -61,6 +72,8 @@ public class LikeService implements DatabaseConstants {
         criterias.addCriteria(new Criteria(new Rule("entityType", "=", entityType), null));
         return LikeTableCRUD.read(criterias).size();
     }
-
+    public List<LikeTable> getAll() throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
+        return LikeTableCRUD.read();
+    }
     
 }
