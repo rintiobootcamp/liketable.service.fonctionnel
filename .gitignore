@@ -3,3 +3,6 @@
 CathegoriesRestServices.iml
 target
 /src/main/resources/local/
+*.iml
+*.out
+logs
