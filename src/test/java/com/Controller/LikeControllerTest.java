@@ -69,7 +69,7 @@ public class LikeControllerTest {
 
         System.out.println("*********************************Test for create like in debat controller done *******************");
     }
-
+/*
     @Test
     public void getLikeByEntity() throws Exception{
         int entityId=3;
@@ -91,7 +91,7 @@ public class LikeControllerTest {
         System.out.println("*********************************Test for get like by id in AXE controller done *******************");
 
     }
-
+*/
 
 
     private LikeTable getLikeById(String entityType, int entityId) throws Exception {

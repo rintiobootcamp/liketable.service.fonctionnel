@@ -40,43 +40,52 @@ import java.util.List;
 @PrepareForTest(LikeTableCRUD.class)
 @PowerMockRunnerDelegate(SpringRunner.class)
 public class LikeServiceTest {
-
     @InjectMocks
     private LikeService likeService;
 
-
     @Test
-    public void create() throws Exception{
-        List<LikeTable> likeTables = loadDataLikeTableFromJsonFile();
-        for (LikeTable likeTable : likeTables) {
-//            preference = preferences.get(1);
-             PowerMockito.mockStatic(LikeTableCRUD.class);
+    public void getAllLike() throws Exception {
+        System.out.println("eee");
+        List<LikeTable> likeTables = loadDatalikeTableFromJsonFile();
+        PowerMockito.mockStatic(LikeTableCRUD.class);
         Mockito.
-                when(LikeTableCRUD.create(likeTable)).thenReturn(true);
-        }
-             
+                when(LikeTableCRUD.read()).thenReturn(likeTables);
+        List<LikeTable> resultlikeTables = likeService.getAll();
+        Assert.assertEquals(likeTables.size(), resultlikeTables.size());
+
+
     }
 
     @Test
-    public void delete() throws Exception{
-        List<LikeTable> likeTables = loadDataLikeTableFromJsonFile();
+    public void create() throws Exception {
+        List<LikeTable> likeTables = loadDatalikeTableFromJsonFile();
+        LikeTable likeTable = likeTables.get(1);
+
+        PowerMockito.mockStatic(LikeTableCRUD.class);
+        Mockito.
+                when(LikeTableCRUD.create(likeTable)).thenReturn(true);
+    }
+
+    @Test
+    public void delete() throws Exception {
+        List<LikeTable> likeTables = loadDatalikeTableFromJsonFile();
         LikeTable likeTable = likeTables.get(1);
 
         PowerMockito.mockStatic(LikeTableCRUD.class);
         Mockito.
                 when(LikeTableCRUD.delete(likeTable)).thenReturn(true);
+
     }
 
     @Test
-    public void update() throws Exception{
-        List<LikeTable> likeTables = loadDataLikeTableFromJsonFile();
+    public void update() throws Exception {
+        List<LikeTable> likeTables = loadDatalikeTableFromJsonFile();
         LikeTable likeTable = likeTables.get(1);
 
         PowerMockito.mockStatic(LikeTableCRUD.class);
         Mockito.
                 when(LikeTableCRUD.update(likeTable)).thenReturn(true);
     }
-
 
     public File getFile(String relativePath) throws Exception {
 
@@ -89,7 +98,7 @@ public class LikeServiceTest {
         return file;
     }
 
-    public List<LikeTable> loadDataLikeTableFromJsonFile() throws Exception {
+    public List<LikeTable> loadDatalikeTableFromJsonFile() throws Exception {
         //TestUtils testUtils = new TestUtils();
         File dataFile = getFile("data-json" + File.separator + "liketable.json");
 
@@ -97,21 +106,9 @@ public class LikeServiceTest {
 
         Type typeOfObjectsListNew = new TypeToken<List<LikeTable>>() {
         }.getType();
-        List<LikeTable> likeTables = GsonUtils.getObjectFromJson(text, typeOfObjectsListNew);
+        List<LikeTable> likeTable = GsonUtils.getObjectFromJson(text, typeOfObjectsListNew);
 
-        return likeTables;
-    }
-
-
-    @Test
-    public void getAllPreference() throws Exception {
-        List<LikeTable> likeTables = loadDataLikeTableFromJsonFile();
-        PowerMockito.mockStatic(LikeTableCRUD.class);
-        HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
-        Mockito.
-                when(LikeTableCRUD.read()).thenReturn(likeTables);
-        List<LikeTable> resultlikeTable = likeService.getAll();
-        Assert.assertNotNull(resultlikeTable);
+        return likeTable;
     }
 
 }
