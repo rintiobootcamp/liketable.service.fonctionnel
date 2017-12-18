@@ -43,7 +43,7 @@ public class LikeController {
     @RequestMapping(method = RequestMethod.POST)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Create a new likeTable", notes = "Create a new likeTable")
-    public ResponseEntity<Integer> create(@RequestBody @Valid LikeTable likeTable) {
+    public ResponseEntity<Integer> create(@RequestBody @Valid LikeTable likeTable) throws SQLException {
 
         HttpStatus httpStatus = null;
 
