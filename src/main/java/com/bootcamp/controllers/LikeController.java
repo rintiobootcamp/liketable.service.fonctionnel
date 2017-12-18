@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -85,4 +87,73 @@ public class LikeController {
 
         return new ResponseEntity<>(likeTable, httpStatus);
     }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/stats/{entityType}/{bools}")
+    @ApiVersions({"1.0"})
+    @ApiOperation(value = "Read all likes", notes = "Read all likes")
+    public ResponseEntity<Integer> readLikeByEntity(  @PathVariable("entityType") String entityType,@PathVariable("bools") String bools) {
+        EntityType entite = EntityType.valueOf(entityType);
+        HttpStatus httpStatus = null;
+        int nbLikeOrUnlike =0;
+
+        try {
+            if(bools.contains("true")){
+                nbLikeOrUnlike = likeTableService.countLike(entite, true);
+            }else if(bools.contains("false")){
+                nbLikeOrUnlike = likeTableService.countUnlike(entite, false);
+            }
+
+            httpStatus = HttpStatus.OK;
+        } catch (SQLException ex) {
+            Logger.getLogger(LikeController.class.getName()).log(Level.SEVERE, null, ex);
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+
+        return new ResponseEntity<>(nbLikeOrUnlike, httpStatus);
+    }
+
+//    @RequestMapping(method = RequestMethod.GET, value = "/stats/{entityType}")
+//    @ApiVersions({"1.0"})
+//    @ApiOperation(value = "Read all debat on entity", notes = "Read all debat on entity")
+//    public ResponseEntity<List<LikeTable>> readAllLikeByEntity(@PathVariable("entityType") String entityType ) {
+//
+//        EntityType entite = EntityType.valueOf(entityType);
+//        List<LikeTable> likes = new ArrayList<>();
+//        HttpStatus httpStatus = null;
+//
+//        try {
+//            likes=  likeTableService.getAllLikeByEntity(entite);
+//            httpStatus = HttpStatus.OK;
+//        } catch (SQLException ex) {
+//            Logger.getLogger(LikeController.class.getName()).log(Level.SEVERE, null, ex);
+//            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+//        }
+//        return new ResponseEntity<>(likes, httpStatus);
+//
+//    }
+
+
+    @RequestMapping(method = RequestMethod.GET, value = "/stats/{entityType}")
+    @ApiVersions({"1.0"})
+    @ApiOperation(value = "Read all debat on entity", notes = "Read all debat on entity")
+    public ResponseEntity<List<LikeTable>> readAllLikeByEntity(@PathVariable("entityType") String entityType ,  @RequestParam("startDate") long startDate, @RequestParam("endDate") long endDate ) {
+        EntityType entite = EntityType.valueOf(entityType);
+        List<LikeTable> likes = new ArrayList<>();
+        HttpStatus httpStatus = null;
+        try {
+            if(startDate==0 && endDate == 0){
+                likes=  likeTableService.getAllLikeByEntity(entite);
+                httpStatus = HttpStatus.OK;
+            }else if(startDate!=0 && endDate != 0){
+                likes=  likeTableService.getAllLikeByEntity(entite,startDate,endDate);
+                httpStatus = HttpStatus.OK;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(LikeController.class.getName()).log(Level.SEVERE, null, ex);
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<>(likes, httpStatus);
+
+    }
+
 }

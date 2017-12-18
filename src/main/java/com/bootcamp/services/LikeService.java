@@ -62,5 +62,40 @@ public class LikeService implements DatabaseConstants {
         return LikeTableCRUD.read(criterias).size();
     }
 
-    
+    public int countLikeOrUnlikeForEntity(EntityType entityType ,boolean b) throws SQLException {
+        Criterias criterias = new Criterias();
+        criterias.addCriteria(new Criteria(new Rule("likeType", "=", b), " AND "));
+        criterias.addCriteria(new Criteria(new Rule("entityType", "=", entityType), null));
+        return LikeTableCRUD.read(criterias).size();
+    }
+
+    public int countLike(EntityType entityType ,boolean b) throws SQLException {
+
+         int nbLike=0;
+         nbLike = countLikeOrUnlikeForEntity(entityType ,true);
+         return nbLike;
+    }
+
+    public int countUnlike(EntityType entityType ,boolean b) throws SQLException {
+
+        int nbUnlike=0;
+        nbUnlike = countLikeOrUnlikeForEntity(entityType ,false);
+        return nbUnlike;
+    }
+
+
+    public List<LikeTable> getAllLikeByEntity(EntityType entityType) throws SQLException {
+        Criterias criterias = new Criterias();
+        criterias.addCriteria(new Criteria(new Rule("entityType", "=", entityType), null));
+        return LikeTableCRUD.read(criterias);
+    }
+
+    public List<LikeTable> getAllLikeByEntity(EntityType entityType , long dateDebut, long dateFin) throws SQLException {
+        Criterias criterias = new Criterias();
+        criterias.addCriteria(new Criteria(new Rule("entityType", "=", entityType), "AND"));
+        criterias.addCriteria(new Criteria(new Rule("dateCreation", ">=", dateDebut),"AND"));
+        criterias.addCriteria(new Criteria(new Rule("dateCreation", "<=", dateFin),null));
+        return LikeTableCRUD.read(criterias);
+    }
+
 }
