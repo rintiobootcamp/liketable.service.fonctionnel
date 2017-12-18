@@ -1,12 +1,4 @@
 [INFO] Scanning for projects...
-[WARNING] 
-[WARNING] Some problems were encountered while building the effective model for com.bootcamp:likeRestServices:war:1.0-SNAPSHOT
-[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ line 253, column 21
-[WARNING] 
-[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
-[WARNING] 
-[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
-[WARNING] 
 [INFO]                                                                         
 [INFO] ------------------------------------------------------------------------
 [INFO] Building LikeRestServices 1.0-SNAPSHOT
@@ -17,19 +9,19 @@
 [INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ likeRestServices ---
 [INFO] Using 'UTF-8' encoding to copy filtered resources.
 [INFO] skip non existing resourceDirectory /home/soul/bootcamp/Review Release_1.3.0/clone/liketable.service.fonctionnel/src/main/resources
-[INFO] Copying 21 resources
+[INFO] Copying 22 resources
 [INFO] 
-[INFO] --- maven-compiler-plugin:3.2:compile (default-compile) @ likeRestServices ---
+[INFO] --- maven-compiler-plugin:3.3:compile (default-compile) @ likeRestServices ---
 [INFO] Changes detected - recompiling the module!
 [INFO] Compiling 8 source files to /home/soul/bootcamp/Review Release_1.3.0/clone/liketable.service.fonctionnel/target/classes
 [INFO] 
 [INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ likeRestServices ---
 [INFO] Using 'UTF-8' encoding to copy filtered resources.
-[INFO] skip non existing resourceDirectory /home/soul/bootcamp/Review Release_1.3.0/clone/liketable.service.fonctionnel/src/test/resources
+[INFO] Copying 1 resource
 [INFO] 
-[INFO] --- maven-compiler-plugin:3.2:testCompile (default-testCompile) @ likeRestServices ---
+[INFO] --- maven-compiler-plugin:3.3:testCompile (default-testCompile) @ likeRestServices ---
 [INFO] Changes detected - recompiling the module!
-[INFO] Compiling 1 source file to /home/soul/bootcamp/Review Release_1.3.0/clone/liketable.service.fonctionnel/target/test-classes
+[INFO] Compiling 3 source files to /home/soul/bootcamp/Review Release_1.3.0/clone/liketable.service.fonctionnel/target/test-classes
 [INFO] 
 [INFO] <<< spring-boot-maven-plugin:1.5.3.RELEASE:run (default-cli) < test-compile @ likeRestServices <<<
 [INFO] 
@@ -43,18 +35,14 @@
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::        (v1.5.8.RELEASE)
 
-[32m2017-12-18 07:49:57.594 WAT [background-preinit] o.h.v.i.u.Version INFO : HV000001: Hibernate Validator 5.3.5.Final
-[m[32m2017-12-18 07:50:07.100 WAT [main] o.a.c.c.StandardService INFO : Starting service [Tomcat]
-[m[32m2017-12-18 07:50:07.102 WAT [main] o.a.c.c.StandardEngine INFO : Starting Servlet Engine: Apache Tomcat/8.5.23
-[m[32m2017-12-18 07:50:08.968 WAT [localhost-startStop-1] o.a.c.c.C.[.[.[/like] INFO : Initializing Spring embedded WebApplicationContext
-[m[32m2017-12-18 07:50:18.641 WAT [main] s.d.s.w.p.DocumentationPluginsBootstrapper INFO : Context refreshed
-[m[32m2017-12-18 07:50:18.732 WAT [main] s.d.s.w.p.DocumentationPluginsBootstrapper INFO : Found 1 custom documentation plugin(s)
-[m[32m2017-12-18 07:50:18.762 WAT [main] s.d.s.w.s.ApiListingReferenceScanner INFO : Scanning for api listing references
-[m[32m2017-12-18 07:50:19.350 WAT [main] o.a.c.h.Http11NioProtocol INFO : Initializing ProtocolHandler ["http-nio-8085"]
-[m[32m2017-12-18 07:50:19.402 WAT [main] o.a.c.h.Http11NioProtocol INFO : Starting ProtocolHandler ["http-nio-8085"]
-[m[32m2017-12-18 07:50:19.475 WAT [main] o.a.t.u.n.NioSelectorPool INFO : Using a shared selector for servlet write/read
-[m[32m2017-12-18 07:50:42.186 WAT [http-nio-8085-exec-1] o.a.c.c.C.[.[.[/like] INFO : Initializing Spring FrameworkServlet 'dispatcherServlet'
-[m[EL Info]: 2017-12-18 07:50:46.106--ServerSession(449911497)--EclipseLink, version: Eclipse Persistence Services - 2.5.2.v20140319-9ad6abd
-[EL Info]: 2017-12-18 07:50:46.105--ServerSession(1421405852)--EclipseLink, version: Eclipse Persistence Services - 2.5.2.v20140319-9ad6abd
-[EL Info]: connection: 2017-12-18 07:50:52.617--ServerSession(449911497)--file:/home/soul/.m2/repository/com/bootcamp/db-access/1.0-SNAPSHOT/db-access-1.0-SNAPSHOT.jar_databasePU login successful
-[EL Info]: connection: 2017-12-18 07:50:52.825--ServerSession(1421405852)--file:/home/soul/bootcamp/Review Release_1.3.0/clone/liketable.service.fonctionnel/target/classes/_databasePU login successful
+[32m2017-12-18 22:13:14.459 WAT [background-preinit] o.h.v.i.u.Version INFO : HV000001: Hibernate Validator 5.3.5.Final
+[m[32m2017-12-18 22:13:23.645 WAT [main] o.a.c.c.StandardService INFO : Starting service [Tomcat]
+[m[32m2017-12-18 22:13:23.651 WAT [main] o.a.c.c.StandardEngine INFO : Starting Servlet Engine: Apache Tomcat/8.5.23
+[m[32m2017-12-18 22:13:24.138 WAT [localhost-startStop-1] o.a.c.c.C.[.[.[/like] INFO : Initializing Spring embedded WebApplicationContext
+[m[32m2017-12-18 22:13:33.310 WAT [main] s.d.s.w.p.DocumentationPluginsBootstrapper INFO : Context refreshed
+[m[32m2017-12-18 22:13:33.408 WAT [main] s.d.s.w.p.DocumentationPluginsBootstrapper INFO : Found 1 custom documentation plugin(s)
+[m[32m2017-12-18 22:13:33.464 WAT [main] s.d.s.w.s.ApiListingReferenceScanner INFO : Scanning for api listing references
+[m[32m2017-12-18 22:13:34.345 WAT [main] o.a.c.h.Http11NioProtocol INFO : Initializing ProtocolHandler ["http-nio-8085"]
+[m[32m2017-12-18 22:13:34.441 WAT [main] o.a.c.h.Http11NioProtocol INFO : Starting ProtocolHandler ["http-nio-8085"]
+[m[32m2017-12-18 22:13:34.647 WAT [main] o.a.t.u.n.NioSelectorPool INFO : Using a shared selector for servlet write/read
+[m

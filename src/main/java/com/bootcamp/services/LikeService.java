@@ -8,8 +8,10 @@ import com.bootcamp.commons.models.Rule;
 import com.bootcamp.commons.ws.usecases.pivotone.LikeWS;
 import com.bootcamp.crud.LikeTableCRUD;
 import com.bootcamp.entities.LikeTable;
+import org.eclipse.persistence.exceptions.DatabaseException;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -19,23 +21,51 @@ import java.util.List;
 @Component
 public class LikeService implements DatabaseConstants {
 
-    public int create(LikeTable likeTable ) throws SQLException {
-       likeTable.setDateCreation(System.currentTimeMillis());
-               LikeTableCRUD.create(likeTable);
+    /**
+     * Insert the given like entity in the database
+     *
+     * @param likeTable
+     * @return like id
+     * @throws SQLException
+     */
+    public int create(LikeTable likeTable) throws SQLException {
+        likeTable.setDateCreation(System.currentTimeMillis());
+        LikeTableCRUD.create(likeTable);
         return likeTable.getId();
     }
 
-    public int update(LikeTable likeTable ) throws SQLException {
+    /**
+     * Update the given like entity in the database
+     *
+     * @param likeTable
+     * @return like id
+     * @throws SQLException
+     */
+    public int update(LikeTable likeTable) throws SQLException {
         LikeTableCRUD.update(likeTable);
         return likeTable.getId();
     }
 
+    /**
+     * Delete a like entity in the database
+     *
+     * @param id
+     * @return likeEntity
+     * @throws SQLException
+     */
     public LikeTable delete(int id) throws SQLException {
         LikeTable likeTable = read(id);
         LikeTableCRUD.delete(likeTable);
         return likeTable;
     }
 
+    /**
+     * Get a like entity by its id
+     *
+     * @param id
+     * @return
+     * @throws SQLException
+     */
     public LikeTable read(int id) throws SQLException {
         Criterias criterias = new Criterias();
         criterias.addCriteria(new Criteria("id", "=", id));
@@ -43,6 +73,14 @@ public class LikeService implements DatabaseConstants {
         return likeTables.get(0);
     }
 
+    /**
+     * Get all the likes and unlikes of a given entity
+     *
+     * @param entityId
+     * @param entityType
+     * @return likeWS (likes and unlikes count)
+     * @throws SQLException
+     */
     public LikeWS  getByEntity(int entityId, EntityType entityType) throws SQLException {
         LikeWS likeWS =new  LikeWS();
         int like=0;
@@ -53,14 +91,24 @@ public class LikeService implements DatabaseConstants {
         likeWS.setUnlike(unlike);
         return likeWS;
     }
-    
-     public int countEntity(int entityId, EntityType entityType ,boolean b) throws SQLException {
+
+    /**
+     * Count the like or unlike of a given entity
+     *
+     * @param entityId
+     * @param entityType
+     * @param b
+     * @return count
+     * @throws SQLException
+     */
+    public int countEntity(int entityId, EntityType entityType, boolean b) throws SQLException {
         Criterias criterias = new Criterias();
         criterias.addCriteria(new Criteria(new Rule("entityId", "=", entityId), " AND "));
         criterias.addCriteria(new Criteria(new Rule("likeType", "=", b), " AND "));
         criterias.addCriteria(new Criteria(new Rule("entityType", "=", entityType), null));
         return LikeTableCRUD.read(criterias).size();
     }
+
 
     public int countLikeOrUnlikeForEntity(EntityType entityType ,boolean b) throws SQLException {
         Criterias criterias = new Criterias();
@@ -97,5 +145,11 @@ public class LikeService implements DatabaseConstants {
         criterias.addCriteria(new Criteria(new Rule("dateCreation", "<=", dateFin),null));
         return LikeTableCRUD.read(criterias);
     }
+
+
+    public List<LikeTable> getAll() throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
+        return LikeTableCRUD.read();
+    }
+    
 
 }
