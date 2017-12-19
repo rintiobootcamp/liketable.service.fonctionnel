@@ -28,10 +28,10 @@ public class LikeService implements DatabaseConstants {
      * @return like id
      * @throws SQLException
      */
-    public int create(LikeTable likeTable) throws SQLException {
+    public LikeTable create(LikeTable likeTable) throws SQLException {
         likeTable.setDateCreation(System.currentTimeMillis());
         LikeTableCRUD.create(likeTable);
-        return likeTable.getId();
+        return likeTable;
     }
 
     /**
@@ -41,9 +41,9 @@ public class LikeService implements DatabaseConstants {
      * @return like id
      * @throws SQLException
      */
-    public int update(LikeTable likeTable) throws SQLException {
+    public LikeTable update(LikeTable likeTable) throws SQLException {
         LikeTableCRUD.update(likeTable);
-        return likeTable.getId();
+        return likeTable;
     }
 
     /**
@@ -53,10 +53,9 @@ public class LikeService implements DatabaseConstants {
      * @return likeEntity
      * @throws SQLException
      */
-    public LikeTable delete(int id) throws SQLException {
+    public boolean delete(int id) throws SQLException {
         LikeTable likeTable = read(id);
-        LikeTableCRUD.delete(likeTable);
-        return likeTable;
+        return LikeTableCRUD.delete(likeTable);
     }
 
     /**
