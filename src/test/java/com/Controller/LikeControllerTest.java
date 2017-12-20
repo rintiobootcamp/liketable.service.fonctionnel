@@ -55,7 +55,7 @@ public class LikeControllerTest {
         LikeTable likeTable = likeTables.get(0);
 
         when(likeService.read(0)).thenReturn(likeTable);
-        when(likeService.create(likeTable)).thenReturn(likeTable.getId());
+        when(likeService.create(likeTable)).thenReturn(likeTable);
         RequestBuilder requestBuilder =
                 post("/likes")
                         .contentType(MediaType.APPLICATION_JSON)

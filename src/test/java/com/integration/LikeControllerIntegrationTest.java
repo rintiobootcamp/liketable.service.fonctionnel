@@ -46,8 +46,8 @@ public class LikeControllerIntegrationTest {
      *The Base URI of Like fonctionnal service,
      * it can be change with the online URI of this service.
      */
-    private String BASE_URI = "http://165.227.69.188:8085/like";
-//    private String BASE_URI = "http://localhost:8085/like";
+//    private String BASE_URI = "http://165.227.69.188:8085/like";
+    private String BASE_URI = "http://localhost:8085/like";
 
     /**
      * The path of the Like controller, according to this controller implementation
@@ -59,9 +59,15 @@ public class LikeControllerIntegrationTest {
      * you have to change it if you have a save data on this ID otherwise
      * a error or conflit will be note by your test.
      */
-    private int entityId = 0;
+    private int entityId = 1;
     
     private int likeId = 0;
+
+    private boolean like = true;
+
+    private long startDate = 1511890840;
+
+    private long endDate = 1511890860;
     
     private String entityType = EntityType.PROJET.toString();
 //    private String entityType = "PROJET";
@@ -71,10 +77,10 @@ public class LikeControllerIntegrationTest {
      * @see LikeTable#id
      * <b>you have to set the entityType of
      * the LikeTable if this entity already exists in the database
-     * @see LikeTable#entityType()
+     * @see LikeTable#getEntityType() ()
      * else, the projet  will be created but not wiht the given ID.
      * Also, you have to set the entityId of the LikeTable
-     * @see LikeTable#entityId()
+     * @see LikeTable#getEntityId()
      * and this will accure an error in the getById method</b>
      * Note that this method will be the first to execute
      * If every done , it will return a 200 httpStatus code
@@ -82,15 +88,9 @@ public class LikeControllerIntegrationTest {
      */
     @Test(priority = 0, groups = {"LikeTableTest"})
     public void createLikeTest() throws Exception{
-        
         String createURI = BASE_URI+LIKE_PATH;
         LikeTable likeTable = getLikeById(entityType,1);
-        likeTable.setId(1);
-        likeTable.setEntityId(1);
-        likeTable.setEntityType(entityType);
-        likeTable.setDateCreation(12032017);
-        likeTable.setDateMiseAJour(18052017);
-        likeTable.setLikeType(true);
+        likeTable.setId(likeId);
         Gson gson = new Gson();
         String likeTableData = gson.toJson(likeTable);
         Response response = given()
@@ -101,11 +101,7 @@ public class LikeControllerIntegrationTest {
                 .when()
                 .post(createURI);
 
-//        System.out.println("\n\n vue: "+response.getBody().asString()+"\n\n");
-
-//        likeId = gson.fromJson(response.getBody().asString(),LikeTable.class ).getId();
-        likeId = Integer.parseInt(response.getBody().asString());
-
+        likeId = gson.fromJson(response.getBody().asString(),LikeTable.class ).getId();
 
         logger.debug(response.getBody().prettyPrint());
 
@@ -114,13 +110,33 @@ public class LikeControllerIntegrationTest {
     }
 
     /**
+     * get like by it's ID
+     * @throws Exception
+     */
+    @Test
+    public void getLikeByIdTest() throws Exception{
+        String getLikeById = BASE_URI+LIKE_PATH+"/"+likeId;
+        Response response = given()
+                .log().all()
+                .contentType("application/json")
+                .expect()
+                .when()
+                .get(getLikeById);
+        logger.debug(response.getBody().prettyPrint());
+
+        Assert.assertEquals(response.statusCode(), 200) ;
+
+    }
+
+
+    /**
      *
      * @throws Exception
      */
-    //@Test
+    @Test
     public void getLikeByEntityTest() throws Exception{
         
-        String getLikeById = BASE_URI+LIKE_PATH+"/"+entityType;
+        String getLikeById = BASE_URI+LIKE_PATH+"/"+entityType+"/"+entityId;
 
         Response response = given()
                 .log().all()
@@ -128,9 +144,24 @@ public class LikeControllerIntegrationTest {
                 .expect()
                 .when()
                 .get(getLikeById);
-
         logger.debug(response.getBody().prettyPrint());
+        Assert.assertEquals(response.statusCode(), 200) ;
 
+    }
+
+    @Test
+    public void getLikeStatByEntityTest() throws Exception{
+        String getLikeById = BASE_URI+LIKE_PATH+"/stats/"+entityType;
+
+        Response response = given()
+                .log().all()
+                .queryParam( "startDate",startDate )
+                .queryParam( "endDate",endDate )
+                .contentType("application/json")
+                .expect()
+                .when()
+                .get(getLikeById);
+        logger.debug(response.getBody().prettyPrint());
         Assert.assertEquals(response.statusCode(), 200) ;
 
     }

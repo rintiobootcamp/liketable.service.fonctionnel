@@ -45,18 +45,9 @@ public class LikeController {
     @RequestMapping(method = RequestMethod.POST)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Create a new likeTable", notes = "Create a new likeTable")
-    public ResponseEntity<Integer> create(@RequestBody @Valid LikeTable likeTable) throws SQLException {
-
-        HttpStatus httpStatus = null;
-
-        int id = -1;
-        try {
-            id = likeTableService.create(likeTable);
-            httpStatus = HttpStatus.OK;
-        } catch (SQLException ex) {
-            Logger.getLogger(LikeController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return new ResponseEntity<>(id, httpStatus);
+    public ResponseEntity<LikeTable> create(@RequestBody @Valid LikeTable likeTable) throws SQLException {
+            LikeTable likeTableRest = likeTableService.create( likeTable );
+        return new ResponseEntity<>(likeTableRest,HttpStatus.OK);
     }
 
     /**
@@ -109,50 +100,6 @@ public class LikeController {
 
         return new ResponseEntity<>(likeTable, httpStatus);
     }
-
-    @RequestMapping(method = RequestMethod.GET, value = "/stats/{entityType}/{bools}")
-    @ApiVersions({"1.0"})
-    @ApiOperation(value = "Read all likes", notes = "Read all likes")
-    public ResponseEntity<Integer> readLikeByEntity(  @PathVariable("entityType") String entityType,@PathVariable("bools") String bools) {
-        EntityType entite = EntityType.valueOf(entityType);
-        HttpStatus httpStatus = null;
-        int nbLikeOrUnlike =0;
-
-        try {
-            if(bools.contains("true")){
-                nbLikeOrUnlike = likeTableService.countLike(entite, true);
-            }else if(bools.contains("false")){
-                nbLikeOrUnlike = likeTableService.countUnlike(entite, false);
-            }
-
-            httpStatus = HttpStatus.OK;
-        } catch (SQLException ex) {
-            Logger.getLogger(LikeController.class.getName()).log(Level.SEVERE, null, ex);
-            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-        }
-
-        return new ResponseEntity<>(nbLikeOrUnlike, httpStatus);
-    }
-
-//    @RequestMapping(method = RequestMethod.GET, value = "/stats/{entityType}")
-//    @ApiVersions({"1.0"})
-//    @ApiOperation(value = "Read all debat on entity", notes = "Read all debat on entity")
-//    public ResponseEntity<List<LikeTable>> readAllLikeByEntity(@PathVariable("entityType") String entityType ) {
-//
-//        EntityType entite = EntityType.valueOf(entityType);
-//        List<LikeTable> likes = new ArrayList<>();
-//        HttpStatus httpStatus = null;
-//
-//        try {
-//            likes=  likeTableService.getAllLikeByEntity(entite);
-//            httpStatus = HttpStatus.OK;
-//        } catch (SQLException ex) {
-//            Logger.getLogger(LikeController.class.getName()).log(Level.SEVERE, null, ex);
-//            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-//        }
-//        return new ResponseEntity<>(likes, httpStatus);
-//
-//    }
 
 
     @RequestMapping(method = RequestMethod.GET, value = "/stats/{entityType}")
