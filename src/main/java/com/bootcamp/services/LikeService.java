@@ -149,8 +149,8 @@ public class LikeService implements DatabaseConstants {
         TypedQuery<LikeTable> query = em.createQuery(
                 "SELECT e FROM LikeTable e WHERE e.entityType =?1 AND e.dateCreation BETWEEN ?2 AND ?3", LikeTable.class);
         List<LikeTable> likes = query.setParameter(1, entityType.name())
-                                     .setParameter(2, dateFin)
-                                     .setParameter(3, dateDebut)
+                                     .setParameter(2, dateDebut)
+                                     .setParameter(3, dateFin)
                                      .getResultList();
         return likes;
     }
