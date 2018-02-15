@@ -110,7 +110,7 @@ public class LikeController {
         List<LikeTable> likes = new ArrayList<>();
         HttpStatus httpStatus = null;
         try {
-            if (startDate.equals("") && endDate.equals("")) {
+            if (startDate.equals("0") && endDate.equals("0")) {
                 likes = likeTableService.getAllLikeByEntity(entite);
                 httpStatus = HttpStatus.OK;
             } else if (!startDate.equals("") && !endDate.equals("")) {
