@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -46,8 +47,8 @@ public class LikeController {
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Create a new likeTable", notes = "Create a new likeTable")
     public ResponseEntity<LikeTable> create(@RequestBody @Valid LikeTable likeTable) throws SQLException {
-            LikeTable likeTableRest = likeTableService.create( likeTable );
-        return new ResponseEntity<>(likeTableRest,HttpStatus.OK);
+        LikeTable likeTableRest = likeTableService.create(likeTable);
+        return new ResponseEntity<>(likeTableRest, HttpStatus.OK);
     }
 
     /**
@@ -101,23 +102,22 @@ public class LikeController {
         return new ResponseEntity<>(likeTable, httpStatus);
     }
 
-
     @RequestMapping(method = RequestMethod.GET, value = "/stats/{entityType}")
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Read all debat on entity", notes = "Read all debat on entity")
-    public ResponseEntity<List<LikeTable>> readAllLikeByEntity(@PathVariable("entityType") String entityType ,  @RequestParam("startDate") long startDate, @RequestParam("endDate") long endDate ) {
+    public ResponseEntity<List<LikeTable>> readAllLikeByEntity(@PathVariable("entityType") String entityType, @RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) {
         EntityType entite = EntityType.valueOf(entityType);
         List<LikeTable> likes = new ArrayList<>();
         HttpStatus httpStatus = null;
         try {
-            if(startDate==0 && endDate == 0){
-                likes=  likeTableService.getAllLikeByEntity(entite);
+            if (startDate.equals("") && endDate.equals("")) {
+                likes = likeTableService.getAllLikeByEntity(entite);
                 httpStatus = HttpStatus.OK;
-            }else if(startDate!=0 && endDate != 0){
-                likes=  likeTableService.getAllLikeByEntity(entite,startDate,endDate);
+            } else if (!startDate.equals("") && !endDate.equals("")) {
+                likes = likeTableService.getAllLikeByEntity(entite, startDate, endDate);
                 httpStatus = HttpStatus.OK;
             }
-        } catch (SQLException ex) {
+        } catch (SQLException | ParseException ex) {
             Logger.getLogger(LikeController.class.getName()).log(Level.SEVERE, null, ex);
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         }
