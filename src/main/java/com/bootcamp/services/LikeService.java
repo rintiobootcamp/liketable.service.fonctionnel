@@ -13,7 +13,12 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 
 /**
  * Created by darextossa on 11/27/17.
@@ -80,12 +85,12 @@ public class LikeService implements DatabaseConstants {
      * @return likeWS (likes and unlikes count)
      * @throws SQLException
      */
-    public LikeWS  getByEntity(int entityId, EntityType entityType) throws SQLException {
-        LikeWS likeWS =new  LikeWS();
-        int like=0;
-        int unlike=0;
-        like = countEntity(entityId,  entityType ,true);
-        unlike = countEntity(entityId,  entityType ,false);
+    public LikeWS getByEntity(int entityId, EntityType entityType) throws SQLException {
+        LikeWS likeWS = new LikeWS();
+        int like = 0;
+        int unlike = 0;
+        like = countEntity(entityId, entityType, true);
+        unlike = countEntity(entityId, entityType, false);
         likeWS.setLike(like);
         likeWS.setUnlike(unlike);
         return likeWS;
@@ -108,28 +113,26 @@ public class LikeService implements DatabaseConstants {
         return LikeTableCRUD.read(criterias).size();
     }
 
-
-    public int countLikeOrUnlikeForEntity(EntityType entityType ,boolean b) throws SQLException {
+    public int countLikeOrUnlikeForEntity(EntityType entityType, boolean b) throws SQLException {
         Criterias criterias = new Criterias();
         criterias.addCriteria(new Criteria(new Rule("likeType", "=", b), " AND "));
         criterias.addCriteria(new Criteria(new Rule("entityType", "=", entityType), null));
         return LikeTableCRUD.read(criterias).size();
     }
 
-    public int countLike(EntityType entityType ,boolean b) throws SQLException {
+    public int countLike(EntityType entityType, boolean b) throws SQLException {
 
-         int nbLike=0;
-         nbLike = countLikeOrUnlikeForEntity(entityType ,true);
-         return nbLike;
+        int nbLike = 0;
+        nbLike = countLikeOrUnlikeForEntity(entityType, true);
+        return nbLike;
     }
 
-    public int countUnlike(EntityType entityType ,boolean b) throws SQLException {
+    public int countUnlike(EntityType entityType, boolean b) throws SQLException {
 
-        int nbUnlike=0;
-        nbUnlike = countLikeOrUnlikeForEntity(entityType ,false);
+        int nbUnlike = 0;
+        nbUnlike = countLikeOrUnlikeForEntity(entityType, false);
         return nbUnlike;
     }
-
 
     public List<LikeTable> getAllLikeByEntity(EntityType entityType) throws SQLException {
         Criterias criterias = new Criterias();
@@ -137,18 +140,23 @@ public class LikeService implements DatabaseConstants {
         return LikeTableCRUD.read(criterias);
     }
 
-    public List<LikeTable> getAllLikeByEntity(EntityType entityType , long dateDebut, long dateFin) throws SQLException {
-        Criterias criterias = new Criterias();
-        criterias.addCriteria(new Criteria(new Rule("entityType", "=", entityType), "AND"));
-        criterias.addCriteria(new Criteria(new Rule("dateCreation", ">=", dateDebut),"AND"));
-        criterias.addCriteria(new Criteria(new Rule("dateCreation", "<=", dateFin),null));
-        return LikeTableCRUD.read(criterias);
-    }
+    public List<LikeTable> getAllLikeByEntity(EntityType entityType, String startDate, String endDate) throws SQLException, ParseException {
+        EntityManager em = Persistence.createEntityManagerFactory(DatabaseConstants.PERSISTENCE_UNIT).createEntityManager();
 
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        long dateDebut = formatter.parse(startDate).getTime();
+        long dateFin = formatter.parse(endDate).getTime();
+        TypedQuery<LikeTable> query = em.createQuery(
+                "SELECT e FROM LikeTable e WHERE e.entityType =?1 AND e.dateCreation BETWEEN ?2 AND ?3", LikeTable.class);
+        List<LikeTable> likes = query.setParameter(1, entityType.name())
+                                     .setParameter(2, dateDebut)
+                                     .setParameter(3, dateFin)
+                                     .getResultList();
+        return likes;
+    }
 
     public List<LikeTable> getAll() throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
         return LikeTableCRUD.read();
     }
-    
 
 }
