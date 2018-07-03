@@ -60,7 +60,7 @@ public class LikeController {
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Read a like", notes = "Read a like")
-    public ResponseEntity<LikeTable> read(@PathVariable(name = "id") int id) {
+    public ResponseEntity<LikeTable> read(@PathVariable(name = "id") int id)  throws Exception{
 
         LikeTable likeTable = new LikeTable();
         HttpStatus httpStatus = null;
@@ -86,7 +86,7 @@ public class LikeController {
     @RequestMapping(method = RequestMethod.GET, value = "/{entityType}/{entityId}")
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Read a like", notes = "Read a like")
-    public ResponseEntity<LikeWS> readByEntity(@PathVariable("entityId") int entityId, @PathVariable("entityType") String entityType) {
+    public ResponseEntity<LikeWS> readByEntity(@PathVariable("entityId") int entityId, @PathVariable("entityType") String entityType) throws Exception{
         EntityType entite = EntityType.valueOf(entityType);
         LikeWS likeTable = new LikeWS();
         HttpStatus httpStatus = null;
@@ -105,7 +105,7 @@ public class LikeController {
     @RequestMapping(method = RequestMethod.GET, value = "/stats/{entityType}")
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Read all debat on entity", notes = "Read all debat on entity")
-    public ResponseEntity<List<LikeTable>> readAllLikeByEntity(@PathVariable("entityType") String entityType, @RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) {
+    public ResponseEntity<List<LikeTable>> readAllLikeByEntity(@PathVariable("entityType") String entityType, @RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) throws Exception {
         EntityType entite = EntityType.valueOf(entityType);
         List<LikeTable> likes = new ArrayList<>();
         HttpStatus httpStatus = null;
