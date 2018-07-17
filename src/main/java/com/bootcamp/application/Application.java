@@ -18,6 +18,7 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
@@ -27,6 +28,7 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import javax.validation.Validator;
 import java.util.Locale;
 
+@EnableEurekaClient
 @SpringBootApplication
 @Configuration
 @ComponentScan({"com.bootcamp"})
