@@ -330,6 +330,21 @@
                 </resources>
             </build>
         </profile>
+        <profile>
+            <!--profil de production a publier-->
+            <id>test</id>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <filtering>true</filtering>
+                    </resource>
+                    <resource>
+                        <directory>/home/devops/pag/release_2.0/scripts/home/config/dev</directory>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
     </profiles>
 
     <build>
