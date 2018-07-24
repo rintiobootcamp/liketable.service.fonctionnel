@@ -28,7 +28,7 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import javax.validation.Validator;
 import java.util.Locale;
 
-@EnableEurekaClient
+//@EnableEurekaClient
 @SpringBootApplication
 @Configuration
 @ComponentScan({"com.bootcamp"})
