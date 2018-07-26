@@ -126,7 +126,7 @@ public class LikeService implements DatabaseConstants {
 //        criterias.addCriteria(new Criteria(new Rule("likeType", "=", b), " AND "));
 //        criterias.addCriteria(new Criteria(new Rule("entityType", "=", entityType), null));
 //        return LikeTableCRUD.read(criterias).size();
-        return (int)getAllLike().stream().filter(t->t.getEntityType().equals(entityType) && t.getEntityId()==entityId && t.isLikeType()==b).count();
+        return (int)getAllLike().stream().filter(t->t.getEntityType().equals(entityType)).filter(t->t.getEntityId()==entityId).filter(t->t.isLikeType()==b).count();
     }
 
     public int countLikeOrUnlikeForEntity(EntityType entityType, boolean b) throws Exception {
@@ -134,7 +134,7 @@ public class LikeService implements DatabaseConstants {
 //        criterias.addCriteria(new Criteria(new Rule("likeType", "=", b), " AND "));
 //        criterias.addCriteria(new Criteria(new Rule("entityType", "=", entityType), null));
 //        return LikeTableCRUD.read(criterias).size();
-        return (int)getAllLike().stream().filter(t->t.getEntityType().equals(entityType) && t.isLikeType()==b).count();
+        return (int)getAllLike().stream().filter(t->t.getEntityType().equals(entityType)).filter(t->t.isLikeType()==b).count();
     }
 
     public int countLike(EntityType entityType, boolean b) throws Exception {
