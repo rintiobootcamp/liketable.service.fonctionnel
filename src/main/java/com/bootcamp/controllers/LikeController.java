@@ -46,7 +46,7 @@ public class LikeController {
     @RequestMapping(method = RequestMethod.POST)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Create a new likeTable", notes = "Create a new likeTable")
-    public ResponseEntity<LikeTable> create(@RequestBody @Valid LikeTable likeTable) throws SQLException {
+    public ResponseEntity<LikeTable> create(@RequestBody @Valid LikeTable likeTable) throws Exception {
         LikeTable likeTableRest = likeTableService.create(likeTable);
         return new ResponseEntity<>(likeTableRest, HttpStatus.OK);
     }
@@ -123,6 +123,16 @@ public class LikeController {
         }
         return new ResponseEntity<>(likes, httpStatus);
 
+    }
+
+    @RequestMapping(value = "/elasticdata",method = RequestMethod.GET)
+    @ApiVersions({"1.0"})
+    @ApiOperation(value = "Create Elasticsearch indexes", notes = "Create Elasticsearch indexes")
+    public ResponseEntity<String> createIndexs() throws Exception {
+        String retour = "NOT DONE";
+        if (likeTableService.createAllIndexLike())
+            retour = "DONE";
+        return new ResponseEntity<>(retour, HttpStatus.OK);
     }
 
 }

@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
@@ -30,7 +31,12 @@ import javax.persistence.TypedQuery;
  */
 @Component
 public class LikeService implements DatabaseConstants {
+    ElasticClient elasticClient ;
 
+    @PostConstruct
+    public void init(){
+        elasticClient = new ElasticClient();
+    }
     /**
      * Insert the given like entity in the database
      *
@@ -38,9 +44,10 @@ public class LikeService implements DatabaseConstants {
      * @return like id
      * @throws SQLException
      */
-    public LikeTable create(LikeTable likeTable) throws SQLException {
+    public LikeTable create(LikeTable likeTable) throws Exception {
         likeTable.setDateCreation(System.currentTimeMillis());
         LikeTableCRUD.create(likeTable);
+        createAllIndexLike();
         return likeTable;
     }
 
@@ -51,8 +58,9 @@ public class LikeService implements DatabaseConstants {
      * @return like id
      * @throws SQLException
      */
-    public LikeTable update(LikeTable likeTable) throws SQLException {
+    public LikeTable update(LikeTable likeTable) throws Exception {
         LikeTableCRUD.update(likeTable);
+        createAllIndexLike();
         return likeTable;
     }
 
@@ -65,7 +73,9 @@ public class LikeService implements DatabaseConstants {
      */
     public boolean delete(int id) throws Exception {
         LikeTable likeTable = read(id);
-        return LikeTableCRUD.delete(likeTable);
+        if( LikeTableCRUD.delete(likeTable))
+        createAllIndexLike();
+        return true;
     }
 
     /**
@@ -111,20 +121,20 @@ public class LikeService implements DatabaseConstants {
      * @throws SQLException
      */
     public int countEntity(int entityId, EntityType entityType, boolean b) throws Exception {
-        Criterias criterias = new Criterias();
-        criterias.addCriteria(new Criteria(new Rule("entityId", "=", entityId), " AND "));
-        criterias.addCriteria(new Criteria(new Rule("likeType", "=", b), " AND "));
-        criterias.addCriteria(new Criteria(new Rule("entityType", "=", entityType), null));
+//        Criterias criterias = new Criterias();
+//        criterias.addCriteria(new Criteria(new Rule("entityId", "=", entityId), " AND "));
+//        criterias.addCriteria(new Criteria(new Rule("likeType", "=", b), " AND "));
+//        criterias.addCriteria(new Criteria(new Rule("entityType", "=", entityType), null));
 //        return LikeTableCRUD.read(criterias).size();
-        return (int)getAllLike().stream().filter(t->t.getEntityType().equals(entityType)).filter(t->t.getEntityId()==entityId).filter(t->t.isLikeType()==b).count();
+        return (int)getAllLike().stream().filter(t->t.getEntityType().equals(entityType) && t.getEntityId()==entityId && t.isLikeType()==b).count();
     }
 
     public int countLikeOrUnlikeForEntity(EntityType entityType, boolean b) throws Exception {
-        Criterias criterias = new Criterias();
-        criterias.addCriteria(new Criteria(new Rule("likeType", "=", b), " AND "));
-        criterias.addCriteria(new Criteria(new Rule("entityType", "=", entityType), null));
+//        Criterias criterias = new Criterias();
+//        criterias.addCriteria(new Criteria(new Rule("likeType", "=", b), " AND "));
+//        criterias.addCriteria(new Criteria(new Rule("entityType", "=", entityType), null));
 //        return LikeTableCRUD.read(criterias).size();
-        return (int)getAllLike().stream().filter(t->t.getEntityType().equals(entityType)).filter(t->t.isLikeType()==b).count();
+        return (int)getAllLike().stream().filter(t->t.getEntityType().equals(entityType) && t.isLikeType()==b).count();
     }
 
     public int countLike(EntityType entityType, boolean b) throws Exception {
@@ -142,8 +152,8 @@ public class LikeService implements DatabaseConstants {
     }
 
     public List<LikeTable> getAllLikeByEntity(EntityType entityType) throws Exception {
-        Criterias criterias = new Criterias();
-        criterias.addCriteria(new Criteria(new Rule("entityType", "=", entityType), null));
+//        Criterias criterias = new Criterias();
+//        criterias.addCriteria(new Criteria(new Rule("entityType", "=", entityType), null));
 //        return LikeTableCRUD.read(criterias);
         return getAllLike().stream().filter(t->t.getEntityType().equals(entityType)).collect(Collectors.toList());
     }
@@ -176,6 +186,13 @@ public class LikeService implements DatabaseConstants {
             rest.add(modelMapper.map(obj,LikeTable.class));
         }
         return rest;
+    }
+    public boolean createAllIndexLike()throws Exception{
+        List<LikeTable> likes = LikeTableCRUD.read();
+        for (LikeTable like : likes){
+            elasticClient.creerIndexObjectNative("likes","like",like,like.getId());
+        }
+        return true;
     }
 
 }
