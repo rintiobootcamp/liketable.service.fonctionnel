@@ -126,7 +126,13 @@ public class LikeService implements DatabaseConstants {
 //        criterias.addCriteria(new Criteria(new Rule("likeType", "=", b), " AND "));
 //        criterias.addCriteria(new Criteria(new Rule("entityType", "=", entityType), null));
 //        return LikeTableCRUD.read(criterias).size();
-        return (int)getAllLike().stream().filter(t->t.getEntityType().equalsIgnoreCase(entityType.toString())).filter(t->t.getEntityId()==entityId).filter(t->t.isLikeType()==b).count();
+//        int nb =   getAllLike().stream().filter(t->t.getEntityType().equalsIgnoreCase(entityType.toString()) && t.getEntityId()==entityId && t.equals(b)).collect(Collectors.toList()).size();
+//        System.out.println("LIKE : "+nb);
+//        return nb;
+        return  getAllLike().stream().filter(t->t.getEntityType().equalsIgnoreCase(entityType.toString()))
+                .collect(Collectors.toList())
+                .stream().filter(o->o.getEntityId()==entityId).collect(Collectors.toList())
+                .stream().filter(r->r.isLikeType()==b).collect(Collectors.toList()).size();
     }
 
     public int countLikeOrUnlikeForEntity(EntityType entityType, boolean b) throws Exception {
@@ -134,7 +140,8 @@ public class LikeService implements DatabaseConstants {
 //        criterias.addCriteria(new Criteria(new Rule("likeType", "=", b), " AND "));
 //        criterias.addCriteria(new Criteria(new Rule("entityType", "=", entityType), null));
 //        return LikeTableCRUD.read(criterias).size();
-        return (int)getAllLike().stream().filter(t->t.getEntityType().equalsIgnoreCase(entityType.toString())).filter(t->t.isLikeType()==b).count();
+        return (int)getAllLike().stream().filter(t->t.getEntityType().equalsIgnoreCase(entityType.toString())).collect(Collectors.toList())
+                .stream().filter(t->t.isLikeType()==b).count();
     }
 
     public int countLike(EntityType entityType, boolean b) throws Exception {
@@ -178,7 +185,7 @@ public class LikeService implements DatabaseConstants {
     }
 
     public List<LikeTable> getAllLike() throws Exception{
-        ElasticClient elasticClient = new ElasticClient();
+//        ElasticClient elasticClient = new ElasticClient();
         List<Object> objects = elasticClient.getAllObject("likes");
         ModelMapper modelMapper = new ModelMapper();
         List<LikeTable> rest = new ArrayList<>();
